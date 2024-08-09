@@ -6,12 +6,12 @@ const validatePersonExists = require('../middlewares/validatePersonExists');
 const router = express.Router();
 const PATH = path.resolve('src', 'talker.json');
 
-router.get('/', async (_req, res) => {
+router.get('/talker', async (_req, res) => {
   const content = await readJsonData(PATH);
   return res.status(200).json(content);
 });
 
-router.get('/:id',
+router.get('/talker/:id',
   validatePersonExists,
   async (req, res) => {
     const id = Number(req.params.id);
