@@ -1,10 +1,4 @@
-function validateField(field, fieldName, res, statusCode) {
-  if (field === undefined) {
-    return res.status(statusCode).json(
-      { message: `O campo "${fieldName}" é obrigatório` },
-    );
-  }
-}
+const validateField = require('../utils/validateField');
 
 function validateEmailFormat(email, res, statusCode) {
   const invalidEmail = !(/\w+@\w+\.\w{3}/.test(email));
