@@ -67,4 +67,14 @@ router.put('/talker/:id',
     res.status(200).json(entryToBeAltered);
   });
 
+router.delete('/talker/:id',
+  auth,
+  async (req, res) => {
+    const id = Number(req.params.id);
+    const content = await readJsonData(PATH);
+    const newContent = content.filter((talker) => talker.id !== id);
+    await writeJsonData(PATH, newContent);
+    res.status(204).end();
+  });
+
 module.exports = router;
