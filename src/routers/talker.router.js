@@ -10,6 +10,7 @@ const {
   validateTalk,
   validateWatchedAt,
   validateRate,
+  noPersonFound,
 } = require(
   '../middlewares/validateTalkerFields',
 );
@@ -46,6 +47,24 @@ router.post('/talker',
     newEntry.id = nextId;
     await writeJsonData(PATH, [...content, newEntry]);
     res.status(201).json(newEntry);
+  });
+
+router.put('/talker/:id',
+  auth,
+  validateName,
+  validateAge,
+  validateTalk,
+  validateWatchedAt,
+  validateRate,
+  noPersonFound,
+  async (req, res) => {
+    const id = Number(req.params.id);
+    const content = await readJsonData(PATH);
+    const entryToBeAltered = req.body;
+    entryToBeAltered.id = id;
+    const newContent = content.map((talker) => (talker.id !== id ? talker : entryToBeAltered));
+    await writeJsonData(PATH, newContent);
+    res.status(200).json(entryToBeAltered);
   });
 
 module.exports = router;

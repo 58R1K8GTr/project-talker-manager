@@ -1,4 +1,8 @@
+const path = require('path');
+const readJsonData = require('../utils/fs/readJsonData');
 const validateField = require('../utils/validateField');
+
+const PATH = path.resolve('src', 'talker.json');
 
 function validateNameLength(field, res) {
   if (field.length < 3) {
@@ -66,10 +70,22 @@ function validateRate(req, res, next) {
     || next();
 }
 
+async function noPersonFound(req, res, next) {
+  const id = Number(req.params.id);
+  const content = await readJsonData(PATH);
+  if (!content.find((talker) => talker.id === id)) {
+    return res.status(404).json({
+      message: 'Pessoa palestrante não encontrada',
+    });
+  }
+  next();
+}
+
 module.exports = {
   validateName,
   validateAge,
   validateTalk,
   validateWatchedAt,
   validateRate,
+  noPersonFound,
 };
