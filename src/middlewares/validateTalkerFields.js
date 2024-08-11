@@ -1,8 +1,7 @@
-const path = require('path');
 const readJsonData = require('../utils/fs/readJsonData');
 const validateField = require('../utils/validateField');
 
-const PATH = path.resolve('src', 'talker.json');
+const { TALKER_JSON_PATH } = require('../utils/sharedVariables');
 
 function validateNameLength(field, res) {
   if (field.length < 3) {
@@ -72,7 +71,7 @@ function validateRate(req, res, next) {
 
 async function noPersonFound(req, res, next) {
   const id = Number(req.params.id);
-  const content = await readJsonData(PATH);
+  const content = await readJsonData(TALKER_JSON_PATH);
   if (!content.find((talker) => talker.id === id)) {
     return res.status(404).json({
       message: 'Pessoa palestrante não encontrada',
